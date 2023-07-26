@@ -1,5 +1,11 @@
 """
-Commentary
+Software Development 9
+QAP 4, Project 1: Sales Plot
+Author: Lauren Wilson
+
+Description: A program for a nonspecific company which requests sales per month from the user.
+                Once all twelve months have been entered, displays a basic graph of sales for each
+                month. Months with 0 sales are excluded from the plot.
 """
 
 import matplotlib.pyplot as plt
@@ -25,11 +31,11 @@ for i in range(1, 13):
             if sales < 0:
                 print("Sales cannot be negative.")
             else:
-                # If sales were zero, set the sales variable to None before exiting the loop
-                # (When displayed on a plot, None is hidden)
-                if sales == 0.00:
-                    sales = None
                 break
+    # If sales were zero, set the sales variable to None before adding it to the list
+    # (When displayed on a plot, None is hidden)
+    if sales == 0.00:
+        sales = None
     salesPerMonth.append(sales)
 
 # Define the plot - we can use the 'calendar' module to retrieve a list of months for the x axis

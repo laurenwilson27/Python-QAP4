@@ -1,11 +1,16 @@
 """
-Commentary
+Software Development 9
+QAP 4, Project 1: Sales Receipt
+Author: Lauren Wilson
+
+Description: A program for a hypothetical car insurance company. The user can input
+                information for a new customer's policy, and the program will display
+                a sales receipt for the policy, as well as recording the information
+                to a file.
 """
 
 import datetime
-import math
-# Using Maurice's FormatValues.py
-import FormatValues as fv
+import FormatValues as FV
 
 # Define a list of provinces for validation later
 # (Never know when we'll get a new territory!)
@@ -20,13 +25,6 @@ def askYorN(prompt):
             return response
         else:
             print("Input must be Y or N")
-
-
-def fmtCenterText(text, width):
-    # Find the amount of whitespace needed to centre the given text over the given width
-    # Returns the text with the appropriate amount of whitespace added to the left
-    whitespace = width - len(text)
-    return math.floor(whitespace / 2) * " " + text
 
 
 # Load default values from a file
@@ -103,49 +101,52 @@ while True:
 
     # Print the receipt header
     print()
-    print(fmtCenterText("One Stop Insurance Company", 60))
-    print(fmtCenterText("Sales Receipt", 60))
-    print("_" * 60)
+    print("One Stop Insurance Company")
+    print("Sales Receipt")
+    print()
 
     # Print the customer information onto the receipt
-    print("  Customer Name: " + firstName + " " + lastName)
-    print("  Address:       " + custAddr)
-    print("                 " + custCity + ", " + custProvince)
-    print("                 " + custPostal)
-    print("  Phone Number:  " + custPhone)
-    print()
-    print()
+    print("Customer Information:")
+    print("  " + "{:<30}".format(firstName + " " + lastName)+"    Premium Breakdown:")
+    print("  " + "{:<30}".format(custAddr) +
+          "      Vehicles insured: " + f'{carCount:<3d}' + " " + f"{FV.FDollar2(basicPremium):>10s}")
 
-    # Print values and costs incurred
-    print("  Vehicles insured: " + str(carCount) + ' ' * 24 + f"{fv.FDollar2(basicPremium):>12s}")
     if optExtraLiability == "Y":
-        print("  Extra liability:  Yes" + ' ' * 22 + f"{fv.FDollar2(LIABILITY_COV_COST):>12s}")
+        print("  " + "{:<30}".format(custCity + ", " + custProvince) +
+              "      Extra liability:  Yes" + " " + f"{FV.FDollar2(LIABILITY_COV_COST):>10s}")
     else:
-        print("  Extra liability:  No " + ' ' * 29 + "$0.00")
+        print("  " + "{:<30}".format(custCity + ", " + custProvince) +
+              "      Extra liability:  No       $0.00")
 
     if optGlassCover == "Y":
-        print("  Glass coverage:   Yes" + ' ' * 22 + f"{fv.FDollar2(GLASS_COV_COST):>12s}")
+        print("  " + "{:<30}".format(custPostal) +
+              "      Glass coverage:   Yes" + " " + f"{FV.FDollar2(GLASS_COV_COST):>10s}")
     else:
-        print("  Glass coverage:   No " + ' ' * 29 + "$0.00")
+        print("  " + "{:<30}".format(custPostal) +
+              "      Glass coverage:   No       $0.00")
 
     if optLoanCar == "Y":
-        print("  Loaner car:       Yes" + ' ' * 22 + f"{fv.FDollar2(LOAN_COV_COST):>12s}")
+        print("  " + "{:<30}".format(custPhone) +
+              "      Loaner car:       Yes" + " " + f"{FV.FDollar2(LOAN_COV_COST):>10s}")
     else:
-        print("  Loaner car:       No " + ' ' * 29 + "$0.00")
+        print("  " + "{:<30}".format(custPhone) +
+              "      Loaner car:       No       $0.00")
+
+    print()
 
     # Print subtotals, taxes, etc.
     # print(" " * 27 + "_" * 33)
-    print("{:>45}".format("Total extra costs:") + f"{fv.FDollar2(extraCosts):>12s}")
-    print("{:>45}".format("Total premium:    ") + f"{fv.FDollar2(totalPremium):>12s}")
-    print("{:>45}".format("Sales tax:        ") + f"{fv.FDollar2(hst):>12s}")
-    print(" "*48+"-"*12)
-    print("{:>45}".format("Total cost:       ") + f"{fv.FDollar2(totalCost):>12s}")
-    print("_" * 60)
-    print("  Payment plan selected: " + f"{paymentType:<10s}")
+    print(" "*38+"Total extra costs:    " + f"{FV.FDollar2(extraCosts):>10s}")
+    print(" "*38+"Total premium:        " + f"{FV.FDollar2(totalPremium):>10s}")
+    print(" "*38+"Sales tax:            " + f"{FV.FDollar2(hst):>10s}")
+    print(" " * 38 + "_" * 32)
+    print(" "*38+"Total cost:           " + f"{FV.FDollar2(totalCost):>10s}")
+    print()
+    print("Payment plan selected:   " + paymentType)
     if paymentType == "Monthly":
-        print("  Monthly payment:       " + fv.FDollar2(monthlyPayment))
+        print("  Monthly payment:       " + FV.FDollar2(monthlyPayment))
     else:
-        print("  Full payment:          " + fv.FDollar2(totalCost))
+        print("  Full payment:          " + FV.FDollar2(totalCost))
     print()
     print("  Invoice Date:          " + str(dateToday))
     print("  Next Payment Date:     " + str(dateNextPayment))
@@ -175,7 +176,7 @@ while True:
 
     file = open("OSICDef.dat", "w")
     for line in defaults:
-        file.write(line+"\n")
+        file.write(line + "\n")
     file.close()
 
     print("Policy information processed and saved.")
