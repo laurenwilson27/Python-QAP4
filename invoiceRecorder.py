@@ -86,6 +86,9 @@ while True:
     if optLoanCar == "Y":
         extraCosts += LOAN_COV_COST
 
+    # Extra costs are per car, multiply the total extra costs by the number of cars
+    extraCosts *= carCount
+
     # Calculate premium, find the taxes-in cost
     totalPremium = basicPremium + extraCosts
     hst = totalPremium * HST_RATE
